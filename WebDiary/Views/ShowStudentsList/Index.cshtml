@@ -1,0 +1,46 @@
+﻿@model IEnumerable<WebDiary.DB.Models.Student>
+
+@{
+    ViewBag.Title = "Список студентов";
+}
+
+<h3>Список студентов</h3>
+
+<p>
+    <a href="@Url.Action("Create", "ShowStudentsList")"class="btn btn-primary btn-sm")>Добавить студента</a>
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            ФИО
+        </th>
+        <th>
+            Логин
+        </th>
+        <th>
+            Номер группы
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Fio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Login)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Groups.OrderByDescending(g => g.Group.StudyYear).FirstOrDefault().Group.Number)
+            </td>
+
+            <td>
+                @Html.ActionLink("Удалить", "Delete", new {id = item.Id})
+            </td>
+        </tr>
+    }
+
+</table>

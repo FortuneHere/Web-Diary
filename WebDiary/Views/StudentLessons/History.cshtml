@@ -1,0 +1,52 @@
+﻿@using WebDiary.DB
+@using WebDiary.ViewModels
+@model WebDiary.ViewModels.HistoryModel
+
+@{
+    ViewBag.Title = "Успеваемость";
+    var studyYearProvider = new StudyYearProvider();
+}
+
+<h3>Успеваемость по предмету</h3>
+
+
+<div class="form-group">
+    <span>Список оценок по предмету @Model.SubjectTitle (@Model.ClassType.GetShortDescription()) за @(studyYearProvider.GetYear()) учебный год, @(studyYearProvider.GetSemester().GetDescription().ToLower()) семестр</span>
+</div>
+
+<table class="table">
+    <tr>
+        <th>
+            Дата
+        </th>
+        <th>
+            Оценка
+        </th>
+    </tr>
+
+    @for (var i = 0; i < Model.Items.Count; i++)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => Model.Items[i].Date)
+            </td>
+            <td>
+                @if (Model.Items[i].IsAbsent)
+                {
+                    @:н.б.
+                }
+
+                @Html.DisplayFor(modelItem => Model.Items[i].Mark)
+            </td>
+        </tr>
+    }
+
+    <tr>
+        <td>
+            Средняя оценка
+        </td>
+        <td>
+            @Model.AvarageMark.ToString("F1")
+        </td>
+    </tr>
+</table>

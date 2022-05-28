@@ -1,0 +1,123 @@
+﻿@model WebDiary.ViewModels.EditDairyModel
+
+@{
+    ViewBag.Title = "Журнал";
+}
+
+<style>
+    
+    table {
+      table-layout: fixed; 
+      width: 100%;
+      *margin-left: -100px; /*ie7*/
+    }
+    td, th {
+      vertical-align: top;
+      border-top: 1px solid #ccc;
+      padding: 10px;
+      width: 100px;
+      height: 50px;
+    }
+    td:hover{
+        background-color: #c9e8f6;
+        border-color: #ccd6e0;
+    }
+    .fix {
+      position: absolute;
+      *position: relative; /*ie7*/
+      margin-left: -300px;
+      width: 300px;
+    }
+    .outer {
+      position: relative;
+    }
+    .inner {
+      overflow-x: scroll;
+      overflow-y: visible;
+      width: 800px; 
+      margin-left: 300px;
+    }
+</style>
+
+<script type="text/javascript">
+
+function changeMark(studentId, lessonId) {
+    
+    console.log(studentId, lessonId);
+    $('#markModal').attr('data-studentId', studentId).attr('data-lessonId', lessonId).modal('show');
+}
+
+$(function () {
+    $("#submitDairyButton").click(function () {    
+            $.ajax({
+                url: 'Edit',
+                type: 'POST',
+                dataType: 'json',
+                data: $("#submitDairyDiv").serialize(),
+                success: function (data) {
+                    console.log(data);                    
+                },
+                error: function (xhr, textStatus, exceptionThrown) { alert(xhr.responseText); }
+            });
+        });
+    });
+</script>
+
+<h3>Журнал</h3>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new {name = "submitDairyDiv", id = "submitDairyDiv"}))
+{
+    @Html.HiddenFor(model => model.CourseId)
+    @Html.HiddenFor(model => model.CourseTitle)
+    @Html.HiddenFor(model => model.GroupNumber)
+
+    <div class="form-horizontal outer">
+        <div>
+            <h6>Предмет: @Model.CourseTitle</h6>
+            <h6>Группа: @Model.GroupNumber</h6>
+        </div>
+        <br/>
+        <br/>
+        <div class="inner">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th class="fix">
+                        ФИО
+                    </th>
+                    @for (int i = 0; i < Model.Lessons.Count; i++)
+                    {
+                        <th>
+                            @Model.Lessons[i].Date.ToShortDateString()
+                        </th>
+                    }
+                </tr>
+                </thead>
+                <tbody>
+                @for (var i = 0; i < Model.Students.Count; i++)
+                {
+                    <tr>
+                        <th class="fix">
+                            @Html.DisplayFor(modelItem => Model.Students[i].Fio)
+                        </th>
+                        @for (int j = 0; j < Model.Lessons.Count; j++)
+                        {
+                            <td style="text-align: center" data-studentid="@Model.Students[i].StudentId" data-lessonId="@Model.Lessons[j].LessonId" onclick="changeMark(@Model.Students[i].StudentId, @Model.Lessons[j].LessonId)">
+                                @if (Model.Lessons[j].Marks.FirstOrDefault(m => m.StudentId == Model.Students[i].StudentId)?.IsAbsent == true)
+                                {
+                                    @:н.б.
+                                }
+                                @(Model.Lessons[j].Marks.FirstOrDefault(m => m.StudentId == Model.Students[i].StudentId)?.Mark)
+                            </td>
+                        }
+
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+}
+
+@Html.Partial("MarkModal")

@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Календарь";
+}
+
+<script type="text/javascript">
+            (function () {
+                var hold = false;
+                function initSize() {
+                    if (hold) return;
+                    console.log("initSize");
+                    setTimeout(function () { hold = false; }, 100);
+                    hold = true;
+                    var head = document.getElementById("navbar");
+                    var headHeight = 1 * (head.offsetHeight || head.clientHeight);
+                    var footer = document.getElementById("footer");
+                    var footerHeight = footer != null ? 1 * (footer.offsetHeight || footer.clientHeight) : 0;
+                    document.getElementById("main_container").style.height = (window.innerHeight || window.document.body.clientHeight) - headHeight - footerHeight + "px";
+                }
+                if (window.attachEvent) {
+                    window.attachEvent("onresize", initSize);
+                } else {
+                    window.addEventListener("resize", initSize, false);
+                }
+                window.addEventListener("load", initSize);
+                initSize();
+            })()
+        </script>
+
+@Html.Raw(Model.Render())

@@ -1,0 +1,65 @@
+﻿<script>
+$(function() {
+  $('#loginSubmitButton').click(function() {
+    var login = $('#loginInput').val();
+    if(!login){
+        $('#loginError').text('Логин не введен');
+        return;
+    }
+    var pass = $('#passwordInput').val();
+    if(!pass){
+        $('#loginError').text('Пароль не введен'); 
+        return;
+    }
+    var model = {
+        login: login,
+        password: pass
+    };
+    var url = '@Url.Action("Authorize","Login")';
+    $.ajax({
+    url: url,
+    type: "POST",
+    data: model
+    }).done(function(result) {
+        if(!result.success){
+            $('#loginError').text(result.error);  
+            return;
+        }
+        document.location.reload();
+    }).fail(function(error) {
+      $('#loginError').text(error);
+    });
+  })
+})
+</script>
+
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">Авторизация</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group ml-2 mr-2">
+                        <label for="loginInput" class="col-form-label">Логин:</label>
+                        <input type="email" class="form-control mw-100" id="loginInput" name="login">
+                    </div>
+                    <div class="form-group ml-2 mr-2">
+                        <label for="passwordInput" class="col-form-label">Пароль:</label>
+                        <input type="password" class="form-control mw-100" id="passwordInput" >
+                    </div>
+                    <div class="form-group ml-2 mr-2">
+                        <label class="col-form-label invalid-field mw-100" id="loginError"></label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" id="loginSubmitButton">Войти</button>
+            </div>
+        </div>
+    </div>
+</div>

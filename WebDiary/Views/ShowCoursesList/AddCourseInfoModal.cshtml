@@ -1,0 +1,65 @@
+﻿<script>
+$(function() {
+  $('#addCourseInfoSubmitButton').click(function() {
+    var title = $('#titleInput').val();
+    if(!title){
+        $('#addCourseInfoError').text('Логин не введен');
+        return;
+    }
+    var department = $('#departmentInput').val();
+    if(!department){
+        $('#addCourseInfoError').text('Пароль не введен'); 
+        return;
+    }
+    var model = {
+        title: title,
+        department: department
+    };
+    var url = '@Url.Action("CreateCourseInfo","ShowCoursesList")';
+    $.ajax({
+    url: url,
+    type: "POST",
+    data: model
+    }).done(function(result) {
+        if(!result.success){
+            $('#addCourseInfoError').text(result.error);  
+            return;
+        }
+        document.location.reload();
+    }).fail(function(error) {
+      $('#addCourseInfoError').text(error);
+    });
+  })
+})
+</script>
+
+<div class="modal fade" id="addCourseInfoModal" tabindex="-1" role="dialog" aria-labelledby="addCourseInfoModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCourseInfoModalLabel">Добавление нового предмета</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group ml-2 mr-2">
+                        <label for="titleInput" class="col-form-label">Название предмета:</label>
+                        <input class="form-control mw-100" id="titleInput" >
+                    </div>
+                    <div class="form-group ml-2 mr-2">
+                        <label for="departmentInput" class="col-form-label">Факультет:</label>
+                        <input class="form-control mw-100" id="departmentInput" >
+                    </div>
+                    <div class="form-group ml-2 mr-2">
+                        <label class="col-form-label invalid-field mw-100" id="addCourseInfoError"></label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" id="addCourseInfoSubmitButton">Добавить</button>
+            </div>
+        </div>
+    </div>
+</div>

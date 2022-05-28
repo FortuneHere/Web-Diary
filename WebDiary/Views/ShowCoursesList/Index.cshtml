@@ -1,0 +1,68 @@
+﻿@using WebDiary.DB
+@using WebDiary.ViewModels
+@model List<WebDiary.DB.Models.Course>
+
+@{
+    ViewBag.Title = "Список предметов";
+    var studyYearProvider = new StudyYearProvider();
+}
+
+<h3>Список предметов</h3>
+
+<p>
+    <a href="@Url.Action("Create", "ShowCoursesList")"class="btn btn-primary btn-sm">Добавить предмет</a>
+</p>
+
+<div class="form-group">
+    <span>Список предметов за @(studyYearProvider.GetYear()) учебный год, @(studyYearProvider.GetSemester().GetDescription().ToLower()) семестр</span>
+</div>
+
+<table class="table">
+    <tr>
+        <th>
+            Название предмета
+        </th>
+        <th>
+            Кафедра
+        </th>
+        <th>
+            Преподаватель
+        </th>
+        <th>
+            Группа
+        </th>
+        <th>
+            Тип занятия
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CourseInfo.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CourseInfo.Department)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Teacher.User.ShortFio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Group.Number)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClassTypeName)
+            </td>
+
+
+            <td>
+                @Html.ActionLink("Удалить", "Delete", new {id = item.Id})
+                @Html.ActionLink("Создать расписание", "Create", "Lessons",new {courseId = item.Id}, null)
+                @Html.ActionLink("Календарь", "Index", "Scheduler",new {courseId = item.Id}, null)
+            </td>
+        </tr>
+    }
+
+</table>

@@ -1,0 +1,74 @@
+﻿@using WebDiary.DB
+@using WebDiary.ViewModels
+@model WebDiary.ViewModels.CourseModel
+
+@{
+    ViewBag.Title = "Создание предмета";
+    var studyYearProvider = new StudyYearProvider();
+}
+
+<script type="text/javascript">
+    $(function() {
+      $('#addCourseInfoButton').click(function() {
+              $('#addCourseInfoModal').modal('show');
+      });
+    });
+</script>
+
+@Html.Partial("AddCourseInfoModal")
+
+<h3>Добавление предмета</h3>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr/>
+        <div class="form-group">
+            <span class="control-label col-md-2">Добавление предмета за @(studyYearProvider.GetYear()) учебный год, @(studyYearProvider.GetSemester().GetDescription().ToLower()) семестр</span>
+        </div>
+        @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CourseInfoId, new {@class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.CourseInfoId, Model.CourseInfos, new {id = "CourseInfo_Course", @class = "custom-select"})
+                @Html.HiddenFor(model => model.CourseInfoId, new {id = "CourseInfo_Course_hidden"})
+                <button type="button" id="addCourseInfoButton" class="btn btn-link">Добавить</button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TeacherId, new {@class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.TeacherId, Model.Teachers, new {id = "Teacher_Course", @class = "custom-select"})
+                @Html.HiddenFor(model => model.TeacherId, new {id = "Teacher_Course_hidden"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GroupId, new {@class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.GroupId, Model.Groups, new {id = "Group_Course", @class = "custom-select"})
+                @Html.HiddenFor(model => model.GroupId, new {id = "Group_Course_hidden"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ClassType, new {@class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.ClassType, new {id = "ClassType_Course", @class = "custom-select"})
+                @Html.HiddenFor(model => model.ClassType, new {id = "ClassType_Course_hidden"})
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Добавить" class="btn btn-primary mt-md-5"/>
+            </div>
+        </div>
+    </div>
+}

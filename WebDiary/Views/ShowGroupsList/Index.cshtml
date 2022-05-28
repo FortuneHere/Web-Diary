@@ -1,0 +1,42 @@
+﻿@model List<WebDiary.DB.Models.Group>
+
+@{
+    ViewBag.Title = "Список групп";
+}
+
+<h3>Список групп</h3>
+
+<p>
+    <a href="@Url.Action("Create", "ShowGroupsList")" class="btn btn-primary btn-sm">Добавить группу</a>
+    <a class="btn btn-primary btn-sm">Перевести группу</a>
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            Номер группы
+        </th>
+        <th>
+            Учебный год
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Number)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudyYear)
+            </td>
+
+
+            <td>
+                @Html.ActionLink("Удалить", "Delete", new {id = item.Id})
+            </td>
+        </tr>
+    }
+
+</table>

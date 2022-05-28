@@ -1,0 +1,75 @@
+﻿/*body {*/
+/*    padding-top: 50px;*/
+/*    padding-bottom: 20px;*/
+/*}*/
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+footer .logo {
+    display: inline-block;
+    margin: 4px 0 6px;
+    background: url(logo_f.png) 0 0 no-repeat;
+    height: 60px;
+    width: 237px;
+}
+
+footer .copyright {
+    display: inline-block;
+    vertical-align: top;
+    color: white;
+    margin-top: 30px;
+    margin-left: 30px;
+}
+
+.invalid-field {
+    width: 100%;
+    margin-top: .25rem;
+    font-size: 80%;
+    color: #dc3545;
+}
+
+.navbar .shortFio {
+    color: rgba(255, 255, 255, 0.5);
+    margin-right: 10px;
+}
+.navbar .shortFio:hover {
+    color: rgba(255, 255, 255, 0.75);
+
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    /*line-height: 60px; /* Vertically center the text there */
+    font-size: .875rem;
+    background-color: #444444;
+}

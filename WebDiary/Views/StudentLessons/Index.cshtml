@@ -1,0 +1,57 @@
+﻿@using WebDiary.DB
+@using WebDiary.ViewModels
+@model List<WebDiary.DB.Models.Course>
+
+@{
+    ViewBag.Title = "Список предметов";
+    var studyYearProvider = new StudyYearProvider();
+}
+
+<h3>Список предметов</h3>
+
+
+<div class="form-group">
+    <span>Список предметов за @(studyYearProvider.GetYear()) учебный год, @(studyYearProvider.GetSemester().GetDescription().ToLower()) семестр</span>
+</div>
+
+<table class="table">
+    <tr>
+        <th>
+            Название предмета
+        </th>
+        <th>
+            Кафедра
+        </th>
+        <th>
+            Преподаватель
+        </th>
+        <th>
+            Тип занятия
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CourseInfo.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CourseInfo.Department)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Teacher.User.ShortFio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClassTypeName)
+            </td>
+
+
+            <td>
+                @Html.ActionLink("Успеваемость", "History", "StudentLessons",new {courseId = item.Id}, null)
+            </td>
+        </tr>
+    }
+
+</table>

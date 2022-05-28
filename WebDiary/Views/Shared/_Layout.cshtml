@@ -1,0 +1,126 @@
+﻿@using WebDiary.DB
+@using WebDiary.ViewModels
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Электронный дневник</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@RenderSection("scripts", false)
+@{
+    var userType = (UserType?) Session["UserType"];
+}
+
+<script type="text/javascript">
+    $(function() {
+      $('#loginButton').click(function() {
+              $('#loginModal').modal('show');
+      });
+      $('#showGroupScheduler').click(function() {
+              $('#selectGroupModal').modal('show');
+      });
+    });
+</script>
+
+<nav id="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Дневник</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Action("Index", "News")">Новости</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="showGroupScheduler">Расписание</a>
+            </li>
+            @if (userType == UserType.Student || userType == UserType.Admin)
+            {
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Студентам
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="@Url.Action("Index", "StudentLessons")">Успеваемость</a>
+                    </div>
+                </li>
+            }
+            @if (userType == UserType.Teacher || userType == UserType.Admin)
+            {
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Преподавателям
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="@Url.Action("TeacherIndex", "Scheduler")">Мое расписание</a>
+                        <a class="dropdown-item" href="@Url.Action("Index", "Dairy")">Ведение дневника</a>
+                    </div>
+                </li>
+            }
+            @if (userType == UserType.Admin)
+            {
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Настройки
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="@Url.Action("Index", "ShowStudentsList")">Список студентов</a>
+                        <a class="dropdown-item" href="@Url.Action("Create", "ShowStudentsList")">Добавить студента</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="@Url.Action("Index", "ShowGroupsList")">Список групп</a>
+                        <a class="dropdown-item" href="@Url.Action("Create", "ShowGroupsList")">Добавить группу</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="@Url.Action("Index", "ShowTeachersList")">Список преподавателей</a>
+                        <a class="dropdown-item" href="@Url.Action("Create", "ShowTeachersList")">Добавить преподавателя</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="@Url.Action("Index", "ShowCoursesList")">Список курсов</a>
+                        <a class="dropdown-item" href="@Url.Action("Create", "ShowCoursesList")">Добавить курс</a>
+                    </div>
+                </li>
+            }
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Action("Contacts", "Home")">Контакты</a>
+            </li>
+
+        </ul>
+
+        @if (Session["Id"] == null)
+        {
+            <button type="button" class="btn btn-outline-light" id="loginButton">Войти</button>
+        }
+        else
+        {
+            <a class="shortFio">@Session["ShortFio"]</a>
+            <a href="@Url.Action("LogOut", "Login")" class="btn btn-outline-light"><span class="glyphicon glyphicon-ban-circle"></span> Выход </a>
+        }
+    </div>
+</nav>
+
+
+<div id="main_container" class="container body-content pt-4 pb-4">
+    @RenderBody()
+    <hr/>
+
+</div>
+
+<footer id="footer" class="footer bd-footer">
+    <div class="container">
+        <a class="logo" href="https://kai.ru"></a>
+        <p class="copyright">&copy; @(new StudyYearProvider().GetYear()) - Электронный дневник</p>
+    </div>
+
+</footer>
+
+@Html.Partial("LoginModal")
+@Html.Partial("SelectGroupModal")
+
+</body>
+</html>

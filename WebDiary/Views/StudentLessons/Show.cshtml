@@ -1,0 +1,56 @@
+﻿@model WebDiary.ViewModels.ShowScheduleModel
+
+@{
+    ViewBag.Title = "Журнал";
+}
+
+<h2>Журнал</h2>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new {name = "submitDairyDiv", id = "submitDairyDiv"}))
+{
+    <h2>ФИО пользователя: @Session["Fio"].ToString()</h2>
+
+    <div class="form-horizontal">
+        <div>
+            <h4>Группа: @Model.GroupNumber</h4>
+            <h4>Дата: @Model.Date</h4>
+        </div>
+        <table class="table">
+            <tr>
+                <th>
+                    Предмет
+                </th>
+                <th>
+                    Преподаватель
+                </th>
+                <th>
+                    Оценка
+                </th>
+                <th>
+                </th>
+            </tr>
+
+            @for (var i = 0; i < Model.Items.Count; i++)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.Items[i].CourseTitle)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.Items[i].Teacher)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.Items[i].Mark)
+                    </td>
+
+                    <td>
+                        @* @Html.ActionLink("История", "History", new {courseId = Model.Items[i].CourseId})<br/> *@
+
+                    </td>
+
+                </tr>
+            }
+
+        </table>
+    </div>
+}

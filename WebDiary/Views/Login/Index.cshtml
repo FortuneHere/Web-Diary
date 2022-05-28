@@ -1,0 +1,76 @@
+﻿@model WebDiary.ViewModels.LoginModel
+@{
+    ViewBag.Title = "Авторизация";
+}
+
+<h2>Вход</h2>
+
+<style>
+    #login-div {
+        position: absolute;
+        left: 40%;
+        top: 40%;
+        border: 1px solid #808080;
+        padding: 10px 10px;
+    }
+    .field-validation-error {
+        color: red;
+    }
+    </style>
+
+<div id="login-div">
+    @using (Html.BeginForm("Authorize", "Login", FormMethod.Post)) //Прописали метод из контроллера и прописали сам контроллер
+    {
+        <table>
+            <tr>
+                <td></td>
+                <td style="text-decoration: underline">Войдите в свою учетную запись</td>
+            </tr>
+            <tr>
+                <td>
+                    <!--Подписали лейбл для логина и дали ему едитор -->
+                    @Html.LabelFor(model => model.Login)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.Login)
+                </td>
+            </tr>
+            <tr>
+                <td></td><!--Сообщение при ошибке валидации / не ввел текст -->
+                <td>
+                    @Html.ValidationMessageFor(model => model.Login)
+                </td>
+            </tr>
+
+
+            <tr>
+                <!--Подписали лейбл для пароля и дали ему едитор -->
+                <td>@Html.LabelFor(model => model.Password)</td>
+                <td>@Html.EditorFor(model => model.Password)</td>
+            </tr>
+            <tr>
+                <td></td><!--Сообщение при ошибке валидации /не ввел текст -->
+                <td>
+                    @Html.ValidationMessageFor(model => model.Password)
+                </td>
+            </tr>
+            <tr>
+                <!--Поделили на 2 ячейки, добавили лейбл для текста ошибки -->
+                @* <td colspan="2"> *@
+                @*     <label class="field-validation-error">@Html.DisplayFor(model => model.Login)</label> *@
+                @* </td> *@
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" class="btn btn-primary mt-md-1" name="name" value="Войти"/>
+                </td>
+            </tr>
+
+        </table>
+    }
+</div>
+<!--Добавили(перетащили мышкой) скрипты валидации из папки scripts-->
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
